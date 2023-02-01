@@ -1,21 +1,16 @@
-package com.example.week2_backend.entity;
+package com.example.week2_backend.dto;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 @Getter
 @Setter
-@NoArgsConstructor
-@ToString
 @AllArgsConstructor
-@Builder
-public class UserAccess {
+@NoArgsConstructor
+public class UserAccessDto {
 
-    private Long id;
     private String basicDate;
     private Long impCnt;
     private Long clickCnt;
