@@ -3,6 +3,13 @@ package com.example.week2_backend.repository.impl;
 import com.example.week2_backend.constant.Constant;
 import com.example.week2_backend.entity.UserAccess;
 import com.example.week2_backend.repository.UserAccessRepository;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.stereotype.Repository;
+
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
@@ -13,12 +20,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.stereotype.Repository;
 
 @Repository
 public class UserAccessRepositoryImpl implements UserAccessRepository {

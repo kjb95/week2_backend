@@ -1,6 +1,7 @@
 package com.example.week2_backend.repository;
 
 import com.example.week2_backend.entity.UserAccess;
+
 import java.util.List;
 
 public interface UserAccessRepository {
@@ -10,4 +11,5 @@ public interface UserAccessRepository {
     UserAccess findById(Long id);
 
     List<UserAccess> findAll();
+
 }
