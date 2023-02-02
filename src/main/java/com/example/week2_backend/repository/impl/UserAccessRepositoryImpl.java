@@ -60,6 +60,7 @@ public class UserAccessRepositoryImpl implements UserAccessRepository {
                 .basicDate((String) jsonObject.get("basicDate"))
                 .impCnt((Long) jsonObject.get("impCnt"))
                 .clickCnt((Long) jsonObject.get("clickCnt"))
+                .convCnt((Long) jsonObject.get("convCnt"))
                 .sellCost((Long) jsonObject.get("sellCost"))
                 .adspend((Long) jsonObject.get("adspend"))
                 .build();

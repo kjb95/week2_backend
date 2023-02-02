@@ -14,6 +14,7 @@ public class UserAccessDto {
     private String basicDate;
     private Long impCnt;
     private Long clickCnt;
+    private Long convCnt;
     private Long sellCost;
     private Long adspend;
 }
