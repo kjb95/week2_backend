@@ -22,7 +22,7 @@ public enum ChartDataDictionary {
         return Arrays.stream(ChartDataDictionary.values())
                 .filter(word -> word.english.equals(english))
                 .findAny()
-                .orElseThrow(() -> new IllegalArgumentException())
+                .orElseThrow(IllegalArgumentException::new)
                 .getKorean();
     }
 }
