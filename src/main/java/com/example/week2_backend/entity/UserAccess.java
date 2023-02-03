@@ -1,5 +1,6 @@
 package com.example.week2_backend.entity;
 
+import com.example.week2_backend.dto.UserAccessDto;
 import lombok.*;
 
 @Getter
@@ -17,4 +18,13 @@ public class UserAccess {
     private Long convCnt;
     private Long sellCost;
     private Long adspend;
+
+    public void update(UserAccessDto userAccessDto) {
+        this.basicDate = userAccessDto.getBasicDate() == null ? this.basicDate : userAccessDto.getBasicDate();
+        this.impCnt = userAccessDto.getImpCnt() == null ? this.impCnt : userAccessDto.getImpCnt();
+        this.clickCnt = userAccessDto.getClickCnt() == null ? this.clickCnt : userAccessDto.getClickCnt();
+        this.convCnt = userAccessDto.getConvCnt() == null ? this.convCnt : userAccessDto.getConvCnt();
+        this.sellCost = userAccessDto.getSellCost() == null ? this.sellCost : userAccessDto.getSellCost();
+        this.adspend = userAccessDto.getAdspend() == null ? this.adspend : userAccessDto.getAdspend();
+    }
 }

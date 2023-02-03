@@ -1,6 +1,5 @@
 package com.example.week2_backend.repository.impl;
 
-import com.example.week2_backend.constant.Constant;
 import com.example.week2_backend.entity.UserAccess;
 import com.example.week2_backend.repository.UserAccessRepository;
 import org.json.simple.JSONArray;
@@ -26,23 +25,25 @@ public class UserAccessRepositoryImpl implements UserAccessRepository {
 
     private static Map<Long, UserAccess> store;
     private static long sequence = 0L;
+    private static final String DUMMY_PATH = "./static/dummy.json";
+    private static final String DUMMY_JSON_KEY = "data";
 
     static {
-        initDummy();
+        insertDummy();
     }
 
-    private static void initDummy() {
+    private static void insertDummy() {
         try {
             String dummyPath = computeDummyPath();
             JSONArray jsonArray = computeJSONArray(dummyPath);
-            store = initDummy(jsonArray);
+            store = insertDummy(jsonArray);
         } catch (IOException | ParseException e) {
             e.printStackTrace();
         }
     }
 
     private static String computeDummyPath() throws IOException {
-        ClassPathResource resource = new ClassPathResource(Constant.DUMMY_PATH);
+        ClassPathResource resource = new ClassPathResource(DUMMY_PATH);
         Path path = Paths.get(resource.getURI());
         return path.toString();
     }
@@ -51,7 +52,7 @@ public class UserAccessRepositoryImpl implements UserAccessRepository {
         Reader reader = new FileReader(dummyPath);
         JSONParser parser = new JSONParser();
         JSONObject jsonObject = (JSONObject) parser.parse(reader);
-        return (JSONArray) jsonObject.get(Constant.DUMMY_JSON_KEY);
+        return (JSONArray) jsonObject.get(DUMMY_JSON_KEY);
     }
 
     private static UserAccess crateUserAccess(JSONObject jsonObject) {
@@ -66,15 +67,18 @@ public class UserAccessRepositoryImpl implements UserAccessRepository {
                 .build();
     }
 
-    private static Map<Long, UserAccess> initDummy(JSONArray jsonArray) throws IOException, ParseException {
+    private static Map<Long, UserAccess> insertDummy(JSONArray jsonArray) throws IOException, ParseException {
         return IntStream.range(0, jsonArray.size())
-                .mapToObj(i -> (JSONObject) jsonArray.get(i))
-                .map(UserAccessRepositoryImpl::crateUserAccess)
-                .collect(Collectors.toMap(UserAccess::getId, userAccess -> userAccess));
+                        .mapToObj(i -> (JSONObject) jsonArray.get(i))
+                        .map(UserAccessRepositoryImpl::crateUserAccess)
+                        .collect(Collectors.toMap(UserAccess::getId, userAccess -> userAccess));
     }
 
     @Override
     public UserAccess save(UserAccess userAccess) {
+        if (userAccess.getId() != null) {
+            return userAccess;
+        }
         userAccess.setId(++sequence);
         store.put(userAccess.getId(), userAccess);
         return userAccess;
@@ -88,5 +92,10 @@ public class UserAccessRepositoryImpl implements UserAccessRepository {
     @Override
     public List<UserAccess> findAll() {
         return new ArrayList<>(store.values());
+    }
+
+    @Override
+    public void delete(UserAccess userAccess) {
+        store.remove(userAccess.getId());
     }
 }

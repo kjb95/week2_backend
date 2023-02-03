@@ -12,4 +12,6 @@ public interface UserAccessRepository {
 
     List<UserAccess> findAll();
 
+    void delete(UserAccess userAccess);
+
 }
