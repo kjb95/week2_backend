@@ -1,4 +1,4 @@
-package com.example.week2_backend.enums;
+package backend.useraccess.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

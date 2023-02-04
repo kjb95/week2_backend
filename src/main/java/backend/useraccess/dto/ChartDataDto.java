@@ -1,4 +1,4 @@
-package com.example.week2_backend.dto;
+package backend.useraccess.dto;
 
 import lombok.Builder;
 import lombok.Getter;

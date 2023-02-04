@@ -1,7 +1,7 @@
-package com.example.week2_backend.repository.impl;
+package backend.useraccess.repository.impl;
 
-import com.example.week2_backend.entity.UserAccess;
-import com.example.week2_backend.repository.UserAccessRepository;
+import backend.useraccess.entity.UserAccess;
+import backend.useraccess.repository.UserAccessRepository;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;

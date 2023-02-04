@@ -1,6 +1,6 @@
-package com.example.week2_backend.entity;
+package backend.useraccess.entity;
 
-import com.example.week2_backend.dto.UserAccessDto;
+import backend.useraccess.dto.UserAccessDto;
 import lombok.*;
 
 @Getter

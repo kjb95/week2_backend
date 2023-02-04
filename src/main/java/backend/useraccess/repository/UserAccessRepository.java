@@ -1,6 +1,6 @@
-package com.example.week2_backend.repository;
+package backend.useraccess.repository;
 
-import com.example.week2_backend.entity.UserAccess;
+import backend.useraccess.entity.UserAccess;
 
 import java.util.List;
 

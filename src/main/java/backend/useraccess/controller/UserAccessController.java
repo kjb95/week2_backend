@@ -1,9 +1,9 @@
-package com.example.week2_backend.controller;
+package backend.useraccess.controller;
 
-import com.example.week2_backend.dto.ChartDataDto;
-import com.example.week2_backend.dto.UserAccessDto;
-import com.example.week2_backend.entity.UserAccess;
-import com.example.week2_backend.service.UserAccessService;
+import backend.useraccess.dto.ChartDataDto;
+import backend.useraccess.dto.UserAccessDto;
+import backend.useraccess.entity.UserAccess;
+import backend.useraccess.service.UserAccessService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

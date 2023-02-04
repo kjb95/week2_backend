@@ -1,10 +1,10 @@
-package com.example.week2_backend.service;
+package backend.useraccess.service;
 
-import com.example.week2_backend.dto.ChartDataDto;
-import com.example.week2_backend.dto.UserAccessDto;
-import com.example.week2_backend.entity.UserAccess;
-import com.example.week2_backend.enums.ChartDataDictionary;
-import com.example.week2_backend.repository.UserAccessRepository;
+import backend.useraccess.dto.ChartDataDto;
+import backend.useraccess.dto.UserAccessDto;
+import backend.useraccess.entity.UserAccess;
+import backend.useraccess.enums.ChartDataDictionary;
+import backend.useraccess.repository.UserAccessRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
