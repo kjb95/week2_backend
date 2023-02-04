@@ -1,6 +1,7 @@
 package backend.useraccess.repository.impl;
 
 import backend.useraccess.entity.UserAccess;
+import backend.useraccess.exception.InvalidUserAccessIdException;
 import backend.useraccess.repository.UserAccessRepository;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -23,10 +24,10 @@ import java.util.stream.IntStream;
 @Repository
 public class UserAccessRepositoryImpl implements UserAccessRepository {
 
-    private static Map<Long, UserAccess> store;
-    private static long sequence = 0L;
     private static final String DUMMY_PATH = "./static/dummy.json";
     private static final String DUMMY_JSON_KEY = "data";
+    private static Map<Long, UserAccess> store;
+    private static long sequence = 0L;
 
     static {
         insertDummy();
@@ -69,9 +70,9 @@ public class UserAccessRepositoryImpl implements UserAccessRepository {
 
     private static Map<Long, UserAccess> insertDummy(JSONArray jsonArray) throws IOException, ParseException {
         return IntStream.range(0, jsonArray.size())
-                        .mapToObj(i -> (JSONObject) jsonArray.get(i))
-                        .map(UserAccessRepositoryImpl::crateUserAccess)
-                        .collect(Collectors.toMap(UserAccess::getId, userAccess -> userAccess));
+                .mapToObj(i -> (JSONObject) jsonArray.get(i))
+                .map(UserAccessRepositoryImpl::crateUserAccess)
+                .collect(Collectors.toMap(UserAccess::getId, userAccess -> userAccess));
     }
 
     @Override
@@ -86,7 +87,11 @@ public class UserAccessRepositoryImpl implements UserAccessRepository {
 
     @Override
     public UserAccess findById(Long id) {
-        return store.get(id);
+        UserAccess userAccess = store.get(id);
+        if (userAccess == null) {
+            throw new InvalidUserAccessIdException();
+        }
+        return userAccess;
     }
 
     @Override

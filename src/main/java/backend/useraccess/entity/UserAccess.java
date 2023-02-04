@@ -1,6 +1,6 @@
 package backend.useraccess.entity;
 
-import backend.useraccess.dto.UserAccessDto;
+import backend.useraccess.dto.UserAccessResponseDto;
 import lombok.*;
 
 @Getter
@@ -19,12 +19,12 @@ public class UserAccess {
     private Long sellCost;
     private Long adspend;
 
-    public void update(UserAccessDto userAccessDto) {
-        this.basicDate = userAccessDto.getBasicDate() == null ? this.basicDate : userAccessDto.getBasicDate();
-        this.impCnt = userAccessDto.getImpCnt() == null ? this.impCnt : userAccessDto.getImpCnt();
-        this.clickCnt = userAccessDto.getClickCnt() == null ? this.clickCnt : userAccessDto.getClickCnt();
-        this.convCnt = userAccessDto.getConvCnt() == null ? this.convCnt : userAccessDto.getConvCnt();
-        this.sellCost = userAccessDto.getSellCost() == null ? this.sellCost : userAccessDto.getSellCost();
-        this.adspend = userAccessDto.getAdspend() == null ? this.adspend : userAccessDto.getAdspend();
+    public void update(UserAccessResponseDto userAccessResponseDto) {
+        this.basicDate = userAccessResponseDto.getBasicDate() == null ? this.basicDate : userAccessResponseDto.getBasicDate();
+        this.impCnt = userAccessResponseDto.getImpCnt() == null ? this.impCnt : userAccessResponseDto.getImpCnt();
+        this.clickCnt = userAccessResponseDto.getClickCnt() == null ? this.clickCnt : userAccessResponseDto.getClickCnt();
+        this.convCnt = userAccessResponseDto.getConvCnt() == null ? this.convCnt : userAccessResponseDto.getConvCnt();
+        this.sellCost = userAccessResponseDto.getSellCost() == null ? this.sellCost : userAccessResponseDto.getSellCost();
+        this.adspend = userAccessResponseDto.getAdspend() == null ? this.adspend : userAccessResponseDto.getAdspend();
     }
 }

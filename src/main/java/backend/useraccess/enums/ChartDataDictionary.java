@@ -1,5 +1,6 @@
 package backend.useraccess.enums;
 
+import backend.useraccess.exception.InvalidChartFieldNameException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -22,7 +23,7 @@ public enum ChartDataDictionary {
         return Arrays.stream(ChartDataDictionary.values())
                 .filter(word -> word.english.equals(english))
                 .findAny()
-                .orElseThrow(IllegalArgumentException::new)
+                .orElseThrow(InvalidChartFieldNameException::new)
                 .getKorean();
     }
 }

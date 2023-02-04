@@ -1,10 +1,14 @@
 package backend.useraccess.controller;
 
 import backend.useraccess.dto.ChartDataDto;
-import backend.useraccess.dto.UserAccessDto;
+import backend.useraccess.dto.CreateUserAccessRequestDto;
+import backend.useraccess.dto.UserAccessResponseDto;
 import backend.useraccess.entity.UserAccess;
 import backend.useraccess.service.UserAccessService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,6 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/user-access")
+@Slf4j
 public class UserAccessController {
 
     private final UserAccessService userAccessService;
@@ -19,11 +24,13 @@ public class UserAccessController {
     /**
      * 유저 접근 데이터 추가
      *
-     * @param userAccessDto 추가할 유저 접근 데이터
+     * @param createUserAccessRequestDto 추가할 유저 접근 데이터
      */
     @PostMapping()
-    public void createUserAccess(@RequestBody UserAccessDto userAccessDto) {
-        userAccessService.createUserAccess(userAccessDto);
+    public ResponseEntity<Void> createUserAccess(@RequestBody @Validated CreateUserAccessRequestDto createUserAccessRequestDto) {
+        userAccessService.createUserAccess(createUserAccessRequestDto);
+        return ResponseEntity.ok()
+                .build();
     }
 
     /**
@@ -32,8 +39,10 @@ public class UserAccessController {
      * @return 모든 유저접근 데이터 (id값 제외)
      */
     @GetMapping("/all")
-    public List<UserAccessDto> findAllUserAccess() {
-        return userAccessService.findAllUserAccessDto();
+    public ResponseEntity<List<UserAccessResponseDto>> findAllUserAccess() {
+        List<UserAccessResponseDto> allUserAccessResponseDto = userAccessService.findAllUserAccessDto();
+        return ResponseEntity.ok()
+                .body(allUserAccessResponseDto);
     }
 
     /**
@@ -44,8 +53,10 @@ public class UserAccessController {
      * @return 특정 필드 데이터 모음, 특정 필드 이름
      */
     @GetMapping("/all/{fieldName}")
-    public ChartDataDto findAllSpecificField(@PathVariable String fieldName) {
-        return userAccessService.findAllSpecificFieldAndFieldName(fieldName);
+    public ResponseEntity<ChartDataDto> findAllSpecificField(@PathVariable String fieldName) {
+        ChartDataDto allSpecificField = userAccessService.findAllSpecificFieldAndFieldName(fieldName);
+        return ResponseEntity.ok()
+                .body(allSpecificField);
     }
 
     /**
@@ -55,19 +66,21 @@ public class UserAccessController {
      * @return 조회할 유저 접근 데이터
      */
     @GetMapping("/{id}")
-    public UserAccessDto findUserAccessById(@PathVariable String id) {
-        return userAccessService.findUserAccessById(id);
+    public ResponseEntity<UserAccessResponseDto> findUserAccessById(@PathVariable String id) {
+        UserAccessResponseDto userAccessResponseDto = userAccessService.findUserAccessById(id);
+        return ResponseEntity.ok()
+                .body(userAccessResponseDto);
     }
 
     /**
      * 유저접근 데이터 수정
      *
-     * @param userAccessDto 업데이트 할 유저 접근 데이터
-     * @param id            수정할 유저 접근 데이터의 id
+     * @param userAccessResponseDto 업데이트 할 유저 접근 데이터
+     * @param id                    수정할 유저 접근 데이터의 id
      */
     @PutMapping("/{id}")
-    public void updateUserAccess(@RequestBody UserAccessDto userAccessDto, @PathVariable String id) {
-        userAccessService.updateUserAccess(userAccessDto, id);
+    public void updateUserAccess(@RequestBody @Validated UserAccessResponseDto userAccessResponseDto, @PathVariable String id) {
+        userAccessService.updateUserAccess(userAccessResponseDto, id);
     }
 
     /**
