@@ -81,19 +81,16 @@ public class UserAccessService {
 
     /**
      * 유저접근 데이터 생성
-     *
-     * @param createUserAccessRequestDto 유저접근 데이터
      */
-    public void createUserAccess(CreateUserAccessRequestDto createUserAccessRequestDto) {
+    public UserAccessResponseDto createUserAccess(CreateUserAccessRequestDto createUserAccessRequestDto) {
         ModelMapper modelMapper = new ModelMapper();
         UserAccess userAccess = modelMapper.map(createUserAccessRequestDto, UserAccess.class);
-        userAccessRepository.save(userAccess);
+        UserAccess savedUserAccess = userAccessRepository.save(userAccess);
+        return modelMapper.map(savedUserAccess, UserAccessResponseDto.class);
     }
 
     /**
      * 모든 유저접근 데이터 조회
-     *
-     * @return 모든 유저접근 데이터 (id값 제외)
      */
     public List<UserAccessResponseDto> findAllUserAccessDto() {
         ModelMapper modelMapper = new ModelMapper();
@@ -106,9 +103,6 @@ public class UserAccessService {
     /**
      * 모든 유저접근 데이터 중 특정 필드만 조회
      * Long 타입의 필드만 조회 가능
-     *
-     * @param fieldName 특정 필드 이름
-     * @return 특정 필드 데이터 모음, 특정 필드 이름
      */
     public ChartDataDto findAllSpecificFieldAndFieldName(String fieldName) {
         List<Long> specificFields = findAllSpecificField(fieldName);
@@ -150,9 +144,6 @@ public class UserAccessService {
 
     /**
      * id로 유저 접근 데이터 조회
-     *
-     * @param id 조회할 유저 접근 데이터 id
-     * @return 조회할 유저 접근 데이터
      */
     public UserAccessResponseDto findUserAccessById(String id) {
         UserAccess userAccess = userAccessRepository.findById(Long.parseLong(id))
@@ -163,9 +154,6 @@ public class UserAccessService {
 
     /**
      * 유저접근 데이터 수정
-     *
-     * @param userAccessResponseDto 업데이트 할 유저 접근 데이터
-     * @param id                    수정할 유저 접근 데이터의 id
      */
     public void updateUserAccess(UserAccessResponseDto userAccessResponseDto, String id) {
         UserAccess userAccess = userAccessRepository.findById(Long.parseLong(id))
@@ -176,8 +164,6 @@ public class UserAccessService {
 
     /**
      * 모든 유저접근 데이터 삭제
-     *
-     * @param id 삭제할 유저 접근 데이터의 id
      */
     public void deleteUserAccessById(String id) {
         UserAccess userAccess = userAccessRepository.findById(Long.parseLong(id))
@@ -188,8 +174,6 @@ public class UserAccessService {
     /**
      * 모든 유저 접근 데이터 조회 (id 포함)
      * 엔티티 자체를 가져오는 테스트용 메소드
-     *
-     * @return 모든 유저 접근 데이터
      */
     public List<UserAccess> findAllUserAccessWithId() {
         return userAccessRepository.findAll();
