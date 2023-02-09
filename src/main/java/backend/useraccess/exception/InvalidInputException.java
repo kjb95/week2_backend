@@ -1,7 +1,13 @@
 package backend.useraccess.exception;
 
+import backend.useraccess.enums.ErrorCode;
+import lombok.Getter;
+
+@Getter
 public class InvalidInputException extends RuntimeException{
-    public InvalidInputException(String message) {
-        super(message);
+    private final ErrorCode errorCode;
+    public InvalidInputException(ErrorCode errorCode) {
+        this.errorCode = errorCode;
     }
+
 }

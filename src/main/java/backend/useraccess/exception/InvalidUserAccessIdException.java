@@ -1,7 +1,9 @@
 package backend.useraccess.exception;
 
+import backend.useraccess.enums.ErrorCode;
+
 public class InvalidUserAccessIdException extends InvalidInputException{
     public InvalidUserAccessIdException() {
-        super("존재하지 않는 유저 접근 데이터 아이디 입니다.");
+        super(ErrorCode.NOT_FOUND_USER_ACCESS_ID);
     }
 }

@@ -3,12 +3,13 @@ package backend.useraccess.repository;
 import backend.useraccess.entity.UserAccess;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface UserAccessRepository {
 
     UserAccess save(UserAccess userAccess);
 
-    UserAccess findById(Long id);
+    Optional<UserAccess> findById(Long id);
 
     List<UserAccess> findAll();
 

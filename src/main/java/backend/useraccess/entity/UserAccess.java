@@ -3,6 +3,11 @@ package backend.useraccess.entity;
 import backend.useraccess.dto.UserAccessResponseDto;
 import lombok.*;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
+@Entity
 @Getter
 @Setter
 @NoArgsConstructor
@@ -11,6 +16,8 @@ import lombok.*;
 @Builder
 public class UserAccess {
 
+    @Id
+    @GeneratedValue
     private Long id;
     private String basicDate;
     private Long impCnt;

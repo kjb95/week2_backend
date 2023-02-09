@@ -1,23 +1,83 @@
 package backend.useraccess.service;
 
 import backend.useraccess.dto.ChartDataDto;
-import backend.useraccess.dto.UserAccessResponseDto;
 import backend.useraccess.dto.CreateUserAccessRequestDto;
+import backend.useraccess.dto.UserAccessResponseDto;
 import backend.useraccess.entity.UserAccess;
 import backend.useraccess.enums.ChartDataDictionary;
-import backend.useraccess.repository.UserAccessRepository;
-import lombok.RequiredArgsConstructor;
+import backend.useraccess.exception.InvalidUserAccessIdException;
+import backend.useraccess.repository.UserAccessJpaRepository;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.modelmapper.ModelMapper;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.Reader;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Service
-@RequiredArgsConstructor
 public class UserAccessService {
+    private static final String DUMMY_PATH = "./static/dummy.json";
+    private static final String DUMMY_JSON_KEY = "data";
 
-    private final UserAccessRepository userAccessRepository;
+    private final UserAccessJpaRepository userAccessRepository;
+    //    private final UserAccessRepository userAccessRepository;
+
+    public UserAccessService(UserAccessJpaRepository userAccessRepository) {
+        this.userAccessRepository = userAccessRepository;
+        insertDummy();
+    }
+
+    private void insertDummy() {
+        try {
+            String dummyPath = computeDummyPath();
+            JSONArray jsonArray = computeJSONArray(dummyPath);
+            insertDummy(jsonArray);
+        } catch (IOException | ParseException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private String computeDummyPath() throws IOException {
+        ClassPathResource resource = new ClassPathResource(DUMMY_PATH);
+        Path path = Paths.get(resource.getURI());
+        return path.toString();
+    }
+
+    private JSONArray computeJSONArray(String dummyPath) throws IOException, ParseException {
+        Reader reader = new FileReader(dummyPath);
+        JSONParser parser = new JSONParser();
+        JSONObject jsonObject = (JSONObject) parser.parse(reader);
+        return (JSONArray) jsonObject.get(DUMMY_JSON_KEY);
+    }
+
+    private UserAccess crateUserAccess(JSONObject jsonObject) {
+        return UserAccess.builder()
+                .basicDate((String) jsonObject.get("basicDate"))
+                .impCnt((Long) jsonObject.get("impCnt"))
+                .clickCnt((Long) jsonObject.get("clickCnt"))
+                .convCnt((Long) jsonObject.get("convCnt"))
+                .sellCost((Long) jsonObject.get("sellCost"))
+                .adspend((Long) jsonObject.get("adspend"))
+                .build();
+    }
+
+    private void insertDummy(JSONArray jsonArray) throws IOException, ParseException {
+        IntStream.range(0, jsonArray.size())
+                .mapToObj(i -> (JSONObject) jsonArray.get(i))
+                .map(this::crateUserAccess)
+                .forEach(userAccess -> userAccessRepository.save(userAccess));
+    }
 
     /**
      * 유저접근 데이터 생성
@@ -38,9 +98,9 @@ public class UserAccessService {
     public List<UserAccessResponseDto> findAllUserAccessDto() {
         ModelMapper modelMapper = new ModelMapper();
         return userAccessRepository.findAll()
-                                   .stream()
-                                   .map(userAccess -> modelMapper.map(userAccess, UserAccessResponseDto.class))
-                                   .collect(Collectors.toList());
+                .stream()
+                .map(userAccess -> modelMapper.map(userAccess, UserAccessResponseDto.class))
+                .collect(Collectors.toList());
     }
 
     /**
@@ -57,9 +117,9 @@ public class UserAccessService {
 
     private List<Long> findAllSpecificField(String fieldName) {
         return userAccessRepository.findAll()
-                                   .stream()
-                                   .map(userAccess -> getFieldByFieldName(fieldName, userAccess))
-                                   .collect(Collectors.toList());
+                .stream()
+                .map(userAccess -> getFieldByFieldName(fieldName, userAccess))
+                .collect(Collectors.toList());
     }
 
     private Long getFieldByFieldName(String fieldName, UserAccess userAccess) {
@@ -83,9 +143,9 @@ public class UserAccessService {
 
     private ChartDataDto createChartDataDto(String fieldName, List<Long> specificFields) {
         return ChartDataDto.builder()
-                           .name(ChartDataDictionary.findKoreanByEnglish(fieldName))
-                           .data(specificFields)
-                           .build();
+                .name(ChartDataDictionary.findKoreanByEnglish(fieldName))
+                .data(specificFields)
+                .build();
     }
 
     /**
@@ -95,7 +155,8 @@ public class UserAccessService {
      * @return 조회할 유저 접근 데이터
      */
     public UserAccessResponseDto findUserAccessById(String id) {
-        UserAccess userAccess = userAccessRepository.findById(Long.parseLong(id));
+        UserAccess userAccess = userAccessRepository.findById(Long.parseLong(id))
+                .orElseThrow(InvalidUserAccessIdException::new);
         ModelMapper modelMapper = new ModelMapper();
         return modelMapper.map(userAccess, UserAccessResponseDto.class);
     }
@@ -104,10 +165,11 @@ public class UserAccessService {
      * 유저접근 데이터 수정
      *
      * @param userAccessResponseDto 업데이트 할 유저 접근 데이터
-     * @param id            수정할 유저 접근 데이터의 id
+     * @param id                    수정할 유저 접근 데이터의 id
      */
     public void updateUserAccess(UserAccessResponseDto userAccessResponseDto, String id) {
-        UserAccess userAccess = userAccessRepository.findById(Long.parseLong(id));
+        UserAccess userAccess = userAccessRepository.findById(Long.parseLong(id))
+                .orElseThrow(InvalidUserAccessIdException::new);
         userAccess.update(userAccessResponseDto);
         userAccessRepository.save(userAccess);
     }
@@ -118,7 +180,8 @@ public class UserAccessService {
      * @param id 삭제할 유저 접근 데이터의 id
      */
     public void deleteUserAccessById(String id) {
-        UserAccess userAccess = userAccessRepository.findById(Long.parseLong(id));
+        UserAccess userAccess = userAccessRepository.findById(Long.parseLong(id))
+                .orElseThrow(InvalidUserAccessIdException::new);
         userAccessRepository.delete(userAccess);
     }
 

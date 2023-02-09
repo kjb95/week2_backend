@@ -79,8 +79,10 @@ public class UserAccessController {
      * @param id                    수정할 유저 접근 데이터의 id
      */
     @PutMapping("/{id}")
-    public void updateUserAccess(@RequestBody @Validated UserAccessResponseDto userAccessResponseDto, @PathVariable String id) {
+    public ResponseEntity<Void> updateUserAccess(@RequestBody @Validated UserAccessResponseDto userAccessResponseDto, @PathVariable String id) {
         userAccessService.updateUserAccess(userAccessResponseDto, id);
+        return ResponseEntity.ok()
+                .build();
     }
 
     /**
@@ -89,8 +91,10 @@ public class UserAccessController {
      * @param id 삭제할 유저 접근 데이터의 id
      */
     @DeleteMapping("/{id}")
-    public void deleteUserAccessById(@PathVariable String id) {
+    public ResponseEntity<Void> deleteUserAccessById(@PathVariable String id) {
         userAccessService.deleteUserAccessById(id);
+        return ResponseEntity.ok()
+                .build();
     }
 
     /**
