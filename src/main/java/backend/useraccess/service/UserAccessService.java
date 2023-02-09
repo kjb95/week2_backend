@@ -5,7 +5,6 @@ import backend.useraccess.dto.CreateUserAccessRequestDto;
 import backend.useraccess.dto.UserAccessResponseDto;
 import backend.useraccess.entity.UserAccess;
 import backend.useraccess.enums.ChartDataDictionary;
-import backend.useraccess.exception.InvalidUserAccessIdException;
 import backend.useraccess.repository.UserAccessJpaRepository;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -29,6 +28,7 @@ import java.util.stream.IntStream;
 public class UserAccessService {
     private static final String DUMMY_PATH = "./static/dummy.json";
     private static final String DUMMY_JSON_KEY = "data";
+    private static final String NOT_FOUND_USER_ACCESS_ID = "존재하지 않는 유저 접근 데이터 아이디 입니다.";
 
     private final UserAccessJpaRepository userAccessRepository;
     //    private final UserAccessRepository userAccessRepository;
@@ -156,7 +156,7 @@ public class UserAccessService {
      */
     public UserAccessResponseDto findUserAccessById(String id) {
         UserAccess userAccess = userAccessRepository.findById(Long.parseLong(id))
-                .orElseThrow(InvalidUserAccessIdException::new);
+                .orElseThrow(() -> new NoSuchElementException(NOT_FOUND_USER_ACCESS_ID));
         ModelMapper modelMapper = new ModelMapper();
         return modelMapper.map(userAccess, UserAccessResponseDto.class);
     }
@@ -169,7 +169,7 @@ public class UserAccessService {
      */
     public void updateUserAccess(UserAccessResponseDto userAccessResponseDto, String id) {
         UserAccess userAccess = userAccessRepository.findById(Long.parseLong(id))
-                .orElseThrow(InvalidUserAccessIdException::new);
+                .orElseThrow(() -> new NoSuchElementException(NOT_FOUND_USER_ACCESS_ID));
         userAccess.update(userAccessResponseDto);
         userAccessRepository.save(userAccess);
     }
@@ -181,7 +181,7 @@ public class UserAccessService {
      */
     public void deleteUserAccessById(String id) {
         UserAccess userAccess = userAccessRepository.findById(Long.parseLong(id))
-                .orElseThrow(InvalidUserAccessIdException::new);
+                .orElseThrow(() -> new NoSuchElementException(NOT_FOUND_USER_ACCESS_ID));
         userAccessRepository.delete(userAccess);
     }
 

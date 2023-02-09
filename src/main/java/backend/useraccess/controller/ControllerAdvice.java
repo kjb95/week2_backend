@@ -2,7 +2,6 @@ package backend.useraccess.controller;
 
 import backend.useraccess.dto.ErrorResponse;
 import backend.useraccess.enums.ErrorCode;
-import backend.useraccess.exception.InvalidInputException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
@@ -12,6 +11,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @RestControllerAdvice
@@ -38,10 +38,10 @@ public class ControllerAdvice {
         return new ResponseEntity<>(errorResponse, HttpStatus.valueOf(errorCode.getStatus()));
     }
 
-    @ExceptionHandler(InvalidInputException.class)
-    public ResponseEntity<ErrorResponse> handleInvalidInputException(InvalidInputException e) {
-        ErrorCode errorCode = e.getErrorCode();
-        ErrorResponse errorResponse = new ErrorResponse(errorCode.getCode(), errorCode.getDescription());
+    @ExceptionHandler(NoSuchElementException.class)
+    public ResponseEntity<ErrorResponse> NoSuchElementException(NoSuchElementException e) {
+        ErrorCode errorCode = ErrorCode.NO_SUCH_ELEMENT;
+        ErrorResponse errorResponse = new ErrorResponse(errorCode.getCode(), e.getMessage());
         return new ResponseEntity<>(errorResponse, HttpStatus.valueOf(errorCode.getStatus()));
     }
 

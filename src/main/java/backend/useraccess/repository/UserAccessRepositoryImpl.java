@@ -1,14 +1,11 @@
-package backend.useraccess.repository.impl;
+package backend.useraccess.repository;
 
 import backend.useraccess.entity.UserAccess;
-import backend.useraccess.exception.InvalidUserAccessIdException;
-import backend.useraccess.repository.UserAccessRepository;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.stereotype.Repository;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -18,10 +15,11 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-@Repository
+//@Repository
 public class UserAccessRepositoryImpl implements UserAccessRepository {
 
     private static final String DUMMY_PATH = "./static/dummy.json";
@@ -86,12 +84,9 @@ public class UserAccessRepositoryImpl implements UserAccessRepository {
     }
 
     @Override
-    public UserAccess findById(Long id) {
+    public Optional<UserAccess> findById(Long id) {
         UserAccess userAccess = store.get(id);
-        if (userAccess == null) {
-            throw new InvalidUserAccessIdException();
-        }
-        return userAccess;
+        return Optional.ofNullable(userAccess);
     }
 
     @Override
