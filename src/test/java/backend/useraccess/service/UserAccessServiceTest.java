@@ -15,23 +15,25 @@ import org.springframework.boot.test.context.SpringBootTest;
 import javax.transaction.Transactional;
 import java.util.NoSuchElementException;
 
+import static backend.useraccess.UserAccessTestUtils.assertUserAccessAndCreateUserAccessRequestDto;
+
 
 @SpringBootTest
 @Transactional
 class UserAccessServiceTest {
 
     @Autowired
-    UserAccessJpaRepository userAccessJpaRepository;
+    private UserAccessJpaRepository userAccessJpaRepository;
     @Autowired
-    UserAccessService userAccessService;
+    private UserAccessService userAccessService;
 
     @BeforeEach
-    void setUp() {
+    public void setUp() {
         userAccessJpaRepository.deleteAll();
     }
 
     @Test
-    void createUserAccess_성공() {
+    public void createUserAccess_성공() {
         // given
         CreateUserAccessRequestDto request = UserAccessTestDummy.validCreateUserAccessRequestDto();
         // when
@@ -39,54 +41,41 @@ class UserAccessServiceTest {
         UserAccess result = userAccessJpaRepository.findById(response.getId())
                 .get();
         // then
-        Assertions.assertThat(result.getBasicDate())
-                .isEqualTo(request.getBasicDate());
-        Assertions.assertThat(result.getImpCnt())
-                .isEqualTo(request.getImpCnt());
-        Assertions.assertThat(result.getClickCnt())
-                .isEqualTo(request.getClickCnt());
-        Assertions.assertThat(result.getConvCnt())
-                .isEqualTo(request.getConvCnt());
-        Assertions.assertThat(result.getSellCost())
-                .isEqualTo(request.getSellCost());
-        Assertions.assertThat(result.getAdspend())
-                .isEqualTo(request.getAdspend());
+        assertUserAccessAndCreateUserAccessRequestDto(result, request);
     }
 
     @Test
-    void findAllSpecificFieldAndFieldName_존재하지_필드_이름_예외() {
+    public void findAllSpecificFieldAndFieldName_존재하지_필드_이름_예외() {
         // then
         Assertions.assertThatThrownBy(() -> userAccessService.findAllSpecificFieldAndFieldName("notExist"))
                 .isInstanceOf(NoSuchElementException.class);
     }
 
     @Test
-    void findUserAccessById_존재하지_않는_아이디_예외() {
+    public void findUserAccessById_존재하지_않는_아이디_예외() {
         // then
         Assertions.assertThatThrownBy(() -> userAccessService.findUserAccessById("10000"))
                 .isInstanceOf(NoSuchElementException.class);
-        ;
     }
 
     @Test
-    void updateUserAccess_존재하지_않는_아이디_예외() {
+    public void updateUserAccess_존재하지_않는_아이디_예외() {
         // given
         UpdateUserAccessRequestDto updateUserAccessRequestDto = UserAccessTestDummy.updateBasicDateUserAccessRequestDto();
         // then
         Assertions.assertThatThrownBy(() -> userAccessService.updateUserAccess(updateUserAccessRequestDto, "10000"))
                 .isInstanceOf(NoSuchElementException.class);
-        ;
     }
 
     @Test
-    void deleteUserAccessById_존재하지_않는_아이디_예외() {
+    public void deleteUserAccessById_존재하지_않는_아이디_예외() {
         // then
         Assertions.assertThatThrownBy(() -> userAccessService.deleteUserAccessById("10000"))
                 .isInstanceOf(NoSuchElementException.class);
     }
 
     @Test
-    void updateUserAccess_성공() {
+    public void updateUserAccess_성공() {
         // given
         CreateUserAccessRequestDto createRequest = UserAccessTestDummy.validCreateUserAccessRequestDto();
         UserAccessResponseDto createResponse = userAccessService.createUserAccess(createRequest);
@@ -104,7 +93,7 @@ class UserAccessServiceTest {
     }
 
     @Test
-    void deleteUserAccessById_성공() {
+    public void deleteUserAccessById_성공() {
         // given
         CreateUserAccessRequestDto createRequest = UserAccessTestDummy.validCreateUserAccessRequestDto();
         UserAccessResponseDto createResponse = userAccessService.createUserAccess(createRequest);

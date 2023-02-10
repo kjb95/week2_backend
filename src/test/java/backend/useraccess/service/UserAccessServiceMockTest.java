@@ -18,25 +18,27 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.IntStream;
 
+import static backend.useraccess.UserAccessTestUtils.assertUserAccessAndUserAccessResponseDto;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
+
 
 @SpringBootTest
 @Transactional
 public class UserAccessServiceMockTest {
     @Mock
-    UserAccessJpaRepository userAccessJpaRepository;
+    private UserAccessJpaRepository userAccessJpaRepository;
 
     @InjectMocks
-    UserAccessService userAccessService;
+    private UserAccessService userAccessService;
 
     @BeforeEach
-    void setUp() {
+    public void setUp() {
         userAccessJpaRepository.deleteAll();
     }
 
     @Test
-    void findAllUserAccessDto_성공() {
+    public void findAllUserAccessDto_성공() {
         // given
         List<UserAccess> expectedUserAccesses = UserAccessTestDummy.createUserAccesses(10);
         given(userAccessJpaRepository.findAll()).willReturn(expectedUserAccesses);
@@ -47,25 +49,8 @@ public class UserAccessServiceMockTest {
                 .forEach(i -> assertUserAccessAndUserAccessResponseDto(expectedUserAccesses.get(i), outputs.get(i)));
     }
 
-    private static void assertUserAccessAndUserAccessResponseDto(UserAccess expectedUserAccess, UserAccessResponseDto output) {
-        Assertions.assertThat(output.getId())
-                .isEqualTo(expectedUserAccess.getId());
-        Assertions.assertThat(output.getBasicDate())
-                .isEqualTo(expectedUserAccess.getBasicDate());
-        Assertions.assertThat(output.getImpCnt())
-                .isEqualTo(expectedUserAccess.getImpCnt());
-        Assertions.assertThat(output.getClickCnt())
-                .isEqualTo(expectedUserAccess.getClickCnt());
-        Assertions.assertThat(output.getConvCnt())
-                .isEqualTo(expectedUserAccess.getConvCnt());
-        Assertions.assertThat(output.getSellCost())
-                .isEqualTo(expectedUserAccess.getSellCost());
-        Assertions.assertThat(output.getAdspend())
-                .isEqualTo(expectedUserAccess.getAdspend());
-    }
-
     @Test
-    void findAllSpecificFieldAndFieldName_성공() {
+    public void findAllSpecificFieldAndFieldName_성공() {
         // given
         List<UserAccess> expectedUserAccesses = UserAccessTestDummy.createUserAccesses(10);
         given(userAccessJpaRepository.findAll()).willReturn(expectedUserAccesses);
@@ -87,7 +72,7 @@ public class UserAccessServiceMockTest {
     }
 
     @Test
-    void findUserAccessById_성공() {
+    public void findUserAccessById_성공() {
         // given
         UserAccess expectedUserAccess = UserAccessTestDummy.createUserAccess(1L, 10L);
         given(userAccessJpaRepository.findById(anyLong())).willReturn(Optional.ofNullable(expectedUserAccess));
