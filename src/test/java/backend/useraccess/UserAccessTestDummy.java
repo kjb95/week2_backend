@@ -1,9 +1,14 @@
-package backend.useraccess.controller;
+package backend.useraccess;
 
 import backend.useraccess.dto.CreateUserAccessRequestDto;
 import backend.useraccess.dto.UpdateUserAccessRequestDto;
+import backend.useraccess.entity.UserAccess;
 
-class UserAccessControllerTestDummy {
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.LongStream;
+
+public class UserAccessTestDummy {
 
     public static CreateUserAccessRequestDto validCreateUserAccessRequestDto() {
         return CreateUserAccessRequestDto.builder()
@@ -49,9 +54,27 @@ class UserAccessControllerTestDummy {
                 .build();
     }
 
-    public static UpdateUserAccessRequestDto validUpdateUserAccessRequestDto() {
+    public static UpdateUserAccessRequestDto updateBasicDateUserAccessRequestDto() {
         return UpdateUserAccessRequestDto.builder()
                 .basicDate("1111.11.11")
                 .build();
+    }
+
+    public static UserAccess createUserAccess(Long id, Long value) {
+        return UserAccess.builder()
+                .id(id)
+                .basicDate("2023.01.01")
+                .impCnt(value)
+                .clickCnt(value)
+                .convCnt(value)
+                .sellCost(value)
+                .adspend(value)
+                .build();
+    }
+
+    public static List<UserAccess> createUserAccesses(int n) {
+        return LongStream.rangeClosed(1, n)
+                .mapToObj((i) -> createUserAccess(i, i))
+                .collect(Collectors.toList());
     }
 }

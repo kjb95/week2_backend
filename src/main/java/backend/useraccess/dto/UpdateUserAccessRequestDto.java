@@ -1,9 +1,7 @@
 package backend.useraccess.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+import org.springframework.lang.Nullable;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Pattern;
@@ -12,6 +10,7 @@ import javax.validation.constraints.Pattern;
 @Setter
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor
 public class UpdateUserAccessRequestDto {
     private static final String DATE_REGEX = "^\\d{4}.(0[1-9]|1[012]).(0[1-9]|[12][0-9]|3[01])";
     @Pattern(regexp = DATE_REGEX)

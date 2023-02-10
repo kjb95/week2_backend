@@ -1,5 +1,6 @@
 package backend.useraccess.controller;
 
+import backend.useraccess.UserAccessTestDummy;
 import backend.useraccess.dto.CreateUserAccessRequestDto;
 import backend.useraccess.dto.UpdateUserAccessRequestDto;
 import backend.useraccess.entity.UserAccess;
@@ -42,7 +43,7 @@ class UserAccessControllerTest {
     @Test
     public void 유저_접근_데이터_생성_성공() throws Exception {
         // given
-        CreateUserAccessRequestDto request = UserAccessControllerTestDummy.validCreateUserAccessRequestDto();
+        CreateUserAccessRequestDto request = UserAccessTestDummy.validCreateUserAccessRequestDto();
         // when
         ResultActions resultActions = mvc.perform(post("/api/user-access").contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)));
@@ -67,7 +68,7 @@ class UserAccessControllerTest {
     @Test
     public void 유저_접근_데이터_생성_바인딩_에외() throws Exception {
         // given
-        List<CreateUserAccessRequestDto> requests = Arrays.asList(UserAccessControllerTestDummy.createUserAccessRequestDtoNotnullException(), UserAccessControllerTestDummy.createUserAccessRequestDtoPatternException(), UserAccessControllerTestDummy.createUserAccessRequestDtoMinException());
+        List<CreateUserAccessRequestDto> requests = Arrays.asList(UserAccessTestDummy.createUserAccessRequestDtoNotnullException(), UserAccessTestDummy.createUserAccessRequestDtoPatternException(), UserAccessTestDummy.createUserAccessRequestDtoMinException());
         for (CreateUserAccessRequestDto request : requests) {
             // when
             ResultActions resultActions = mvc.perform(post("/api/user-access").contentType(MediaType.APPLICATION_JSON)
@@ -80,7 +81,7 @@ class UserAccessControllerTest {
     @Test
     public void 유저_접근_데이터_생성_허용하지_않는_HTTP_메소드_예외() throws Exception {
         // given
-        CreateUserAccessRequestDto request = UserAccessControllerTestDummy.validCreateUserAccessRequestDto();
+        CreateUserAccessRequestDto request = UserAccessTestDummy.validCreateUserAccessRequestDto();
         // when
         ResultActions resultActions = mvc.perform(get("/api/user-access").contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)));
@@ -91,7 +92,7 @@ class UserAccessControllerTest {
     @Test
     public void 유저_접근_데이터_아이디로_조회_성공() throws Exception {
         // given
-        CreateUserAccessRequestDto request = UserAccessControllerTestDummy.validCreateUserAccessRequestDto();
+        CreateUserAccessRequestDto request = UserAccessTestDummy.validCreateUserAccessRequestDto();
         mvc.perform(post("/api/user-access").contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)));
         Long id = userAccessJpaRepository.findAll()
@@ -122,7 +123,7 @@ class UserAccessControllerTest {
     @Test
     public void 유저_접근_데이터_전체조회_성공() throws Exception {
         // given
-        CreateUserAccessRequestDto request = UserAccessControllerTestDummy.validCreateUserAccessRequestDto();
+        CreateUserAccessRequestDto request = UserAccessTestDummy.validCreateUserAccessRequestDto();
         mvc.perform(post("/api/user-access").contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)));
         mvc.perform(post("/api/user-access").contentType(MediaType.APPLICATION_JSON)
@@ -137,17 +138,21 @@ class UserAccessControllerTest {
     @Test
     public void 유저_접근_데이터_수정_성공() throws Exception {
         // given
-        CreateUserAccessRequestDto crateRequest = UserAccessControllerTestDummy.validCreateUserAccessRequestDto();
+        CreateUserAccessRequestDto crateRequest = UserAccessTestDummy.validCreateUserAccessRequestDto();
         mvc.perform(post("/api/user-access").contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(crateRequest)));
         Long id = userAccessJpaRepository.findAll()
                 .get(0)
                 .getId();
-        UpdateUserAccessRequestDto updateRequest = UserAccessControllerTestDummy.validUpdateUserAccessRequestDto();
+        UpdateUserAccessRequestDto updateRequest = UserAccessTestDummy.updateBasicDateUserAccessRequestDto();
         // when
+        UserAccess userAccess = userAccessJpaRepository.findAll()
+                .get(0);
+        Assertions.assertThat(userAccess.getBasicDate())
+                .isNotEqualTo(updateRequest.getBasicDate());
         ResultActions resultActions = mvc.perform(put("/api/user-access/" + id).contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(updateRequest)));
-        UserAccess userAccess = userAccessJpaRepository.findAll()
+        userAccess = userAccessJpaRepository.findAll()
                 .get(0);
         // then
         Assertions.assertThat(userAccess.getBasicDate())
@@ -158,7 +163,7 @@ class UserAccessControllerTest {
     @Test
     public void 유저_접근_데이터_수정할때_존재하지_않는_아이디_예외() throws Exception {
         // given
-        UpdateUserAccessRequestDto updateRequest = UserAccessControllerTestDummy.validUpdateUserAccessRequestDto();
+        UpdateUserAccessRequestDto updateRequest = UserAccessTestDummy.updateBasicDateUserAccessRequestDto();
         // when
         ResultActions resultActions = mvc.perform(put("/api/user-access/10000").contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(updateRequest)));
@@ -169,15 +174,19 @@ class UserAccessControllerTest {
     @Test
     public void 유저_접근_데이터_삭제_성공() throws Exception {
         // given
-        CreateUserAccessRequestDto crateRequest = UserAccessControllerTestDummy.validCreateUserAccessRequestDto();
+        CreateUserAccessRequestDto crateRequest = UserAccessTestDummy.validCreateUserAccessRequestDto();
         mvc.perform(post("/api/user-access").contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(crateRequest)));
         Long id = userAccessJpaRepository.findAll()
                 .get(0)
                 .getId();
         // when
-        ResultActions resultActions = mvc.perform(delete("/api/user-access/" + id));
         int dataSize = userAccessJpaRepository.findAll()
+                .size();
+        Assertions.assertThat(dataSize)
+                .isEqualTo(1);
+        ResultActions resultActions = mvc.perform(delete("/api/user-access/" + id));
+        dataSize = userAccessJpaRepository.findAll()
                 .size();
         // then
         Assertions.assertThat(dataSize)

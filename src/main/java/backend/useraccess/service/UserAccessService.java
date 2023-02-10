@@ -2,6 +2,7 @@ package backend.useraccess.service;
 
 import backend.useraccess.dto.ChartDataDto;
 import backend.useraccess.dto.CreateUserAccessRequestDto;
+import backend.useraccess.dto.UpdateUserAccessRequestDto;
 import backend.useraccess.dto.UserAccessResponseDto;
 import backend.useraccess.entity.UserAccess;
 import backend.useraccess.enums.ChartDataDictionary;
@@ -155,10 +156,10 @@ public class UserAccessService {
     /**
      * 유저접근 데이터 수정
      */
-    public void updateUserAccess(UserAccessResponseDto userAccessResponseDto, String id) {
+    public void updateUserAccess(UpdateUserAccessRequestDto updateUserAccessRequestDto, String id) {
         UserAccess userAccess = userAccessRepository.findById(Long.parseLong(id))
                 .orElseThrow(() -> new NoSuchElementException(NOT_FOUND_USER_ACCESS_ID));
-        userAccess.update(userAccessResponseDto);
+        userAccess.update(updateUserAccessRequestDto);
         userAccessRepository.save(userAccess);
     }
 

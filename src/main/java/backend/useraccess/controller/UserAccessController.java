@@ -2,6 +2,7 @@ package backend.useraccess.controller;
 
 import backend.useraccess.dto.ChartDataDto;
 import backend.useraccess.dto.CreateUserAccessRequestDto;
+import backend.useraccess.dto.UpdateUserAccessRequestDto;
 import backend.useraccess.dto.UserAccessResponseDto;
 import backend.useraccess.entity.UserAccess;
 import backend.useraccess.service.UserAccessService;
@@ -66,8 +67,8 @@ public class UserAccessController {
      * 유저접근 데이터 수정
      */
     @PutMapping("/{id}")
-    public ResponseEntity<Void> updateUserAccess(@RequestBody @Validated UserAccessResponseDto userAccessResponseDto, @PathVariable String id) {
-        userAccessService.updateUserAccess(userAccessResponseDto, id);
+    public ResponseEntity<Void> updateUserAccess(@RequestBody @Validated UpdateUserAccessRequestDto updateUserAccessRequestDto, @PathVariable String id) {
+        userAccessService.updateUserAccess(updateUserAccessRequestDto, id);
         return ResponseEntity.ok()
                 .build();
     }
