@@ -1,9 +1,10 @@
-package backend.useraccess.controller;
+package backend.common.controller;
 
 import backend.useraccess.dto.ErrorResponse;
 import backend.useraccess.enums.ErrorCode;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
@@ -39,9 +40,16 @@ public class ControllerAdvice {
     }
 
     @ExceptionHandler(NoSuchElementException.class)
-    public ResponseEntity<ErrorResponse> NoSuchElementException(NoSuchElementException e) {
+    public ResponseEntity<ErrorResponse> handleNoSuchElementException(NoSuchElementException e) {
         ErrorCode errorCode = ErrorCode.NO_SUCH_ELEMENT;
         ErrorResponse errorResponse = new ErrorResponse(errorCode.getCode(), e.getMessage());
+        return new ResponseEntity<>(errorResponse, HttpStatus.valueOf(errorCode.getStatus()));
+    }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<ErrorResponse> handleBadCredentialsException(BadCredentialsException e) {
+        ErrorCode errorCode = ErrorCode.UNAUTHORIZED_USER;
+        ErrorResponse errorResponse = new ErrorResponse(errorCode.getCode(), errorCode.getDescription());
         return new ResponseEntity<>(errorResponse, HttpStatus.valueOf(errorCode.getStatus()));
     }
 
