@@ -1,11 +1,12 @@
 package backend.useraccess.service;
 
+import backend.domain.useraccess.service.UserAccessService;
 import backend.useraccess.UserAccessTestDummy;
-import backend.useraccess.dto.ChartDataDto;
-import backend.useraccess.dto.UserAccessResponseDto;
-import backend.useraccess.entity.UserAccess;
-import backend.useraccess.enums.ChartDataDictionary;
-import backend.useraccess.repository.UserAccessJpaRepository;
+import backend.domain.useraccess.dto.ChartDataDto;
+import backend.domain.useraccess.dto.UserAccessResponseDto;
+import backend.domain.useraccess.entity.UserAccess;
+import backend.domain.useraccess.enums.ChartDataDictionary;
+import backend.domain.useraccess.repository.UserAccessJpaRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

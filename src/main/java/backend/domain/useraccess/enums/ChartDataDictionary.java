@@ -1,4 +1,4 @@
-package backend.useraccess.enums;
+package backend.domain.useraccess.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

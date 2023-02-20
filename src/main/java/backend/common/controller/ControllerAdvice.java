@@ -1,7 +1,7 @@
 package backend.common.controller;
 
-import backend.useraccess.dto.ErrorResponse;
-import backend.useraccess.enums.ErrorCode;
+import backend.domain.useraccess.dto.ErrorResponse;
+import backend.domain.useraccess.enums.ErrorCode;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;

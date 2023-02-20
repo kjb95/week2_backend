@@ -1,6 +1,6 @@
-package backend.client.repository;
+package backend.domain.client.repository;
 
-import backend.client.entity.Client;
+import backend.domain.client.entity.Client;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 

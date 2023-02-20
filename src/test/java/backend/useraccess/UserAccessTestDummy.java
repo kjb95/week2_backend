@@ -1,8 +1,8 @@
 package backend.useraccess;
 
-import backend.useraccess.dto.CreateUserAccessRequestDto;
-import backend.useraccess.dto.UpdateUserAccessRequestDto;
-import backend.useraccess.entity.UserAccess;
+import backend.domain.useraccess.dto.CreateUserAccessRequestDto;
+import backend.domain.useraccess.dto.UpdateUserAccessRequestDto;
+import backend.domain.useraccess.entity.UserAccess;
 
 import java.util.List;
 import java.util.stream.Collectors;

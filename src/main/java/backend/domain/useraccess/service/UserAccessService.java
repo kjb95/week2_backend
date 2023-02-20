@@ -1,12 +1,12 @@
-package backend.useraccess.service;
+package backend.domain.useraccess.service;
 
-import backend.useraccess.dto.ChartDataDto;
-import backend.useraccess.dto.CreateUserAccessRequestDto;
-import backend.useraccess.dto.UpdateUserAccessRequestDto;
-import backend.useraccess.dto.UserAccessResponseDto;
-import backend.useraccess.entity.UserAccess;
-import backend.useraccess.enums.ChartDataDictionary;
-import backend.useraccess.repository.UserAccessJpaRepository;
+import backend.domain.useraccess.dto.UserAccessResponseDto;
+import backend.domain.useraccess.entity.UserAccess;
+import backend.domain.useraccess.enums.ChartDataDictionary;
+import backend.domain.useraccess.dto.ChartDataDto;
+import backend.domain.useraccess.dto.CreateUserAccessRequestDto;
+import backend.domain.useraccess.dto.UpdateUserAccessRequestDto;
+import backend.domain.useraccess.repository.UserAccessJpaRepository;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;

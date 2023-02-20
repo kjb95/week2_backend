@@ -1,6 +1,6 @@
-package backend.useraccess.entity;
+package backend.domain.useraccess.entity;
 
-import backend.useraccess.dto.UpdateUserAccessRequestDto;
+import backend.domain.useraccess.dto.UpdateUserAccessRequestDto;
 import lombok.*;
 
 import javax.persistence.Entity;

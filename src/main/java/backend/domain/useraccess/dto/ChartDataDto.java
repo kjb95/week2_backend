@@ -1,4 +1,4 @@
-package backend.useraccess.dto;
+package backend.domain.useraccess.dto;
 
 import lombok.Builder;
 import lombok.Getter;

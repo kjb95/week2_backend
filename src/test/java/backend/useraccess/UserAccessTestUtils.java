@@ -1,8 +1,8 @@
 package backend.useraccess;
 
-import backend.useraccess.dto.CreateUserAccessRequestDto;
-import backend.useraccess.dto.UserAccessResponseDto;
-import backend.useraccess.entity.UserAccess;
+import backend.domain.useraccess.dto.CreateUserAccessRequestDto;
+import backend.domain.useraccess.dto.UserAccessResponseDto;
+import backend.domain.useraccess.entity.UserAccess;
 import org.assertj.core.api.Assertions;
 
 public class UserAccessTestUtils {

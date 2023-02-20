@@ -1,11 +1,11 @@
-package backend.useraccess.controller;
+package backend.domain.useraccess.controller;
 
-import backend.useraccess.dto.ChartDataDto;
-import backend.useraccess.dto.CreateUserAccessRequestDto;
-import backend.useraccess.dto.UpdateUserAccessRequestDto;
-import backend.useraccess.dto.UserAccessResponseDto;
-import backend.useraccess.entity.UserAccess;
-import backend.useraccess.service.UserAccessService;
+import backend.domain.useraccess.dto.UserAccessResponseDto;
+import backend.domain.useraccess.entity.UserAccess;
+import backend.domain.useraccess.service.UserAccessService;
+import backend.domain.useraccess.dto.ChartDataDto;
+import backend.domain.useraccess.dto.CreateUserAccessRequestDto;
+import backend.domain.useraccess.dto.UpdateUserAccessRequestDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;

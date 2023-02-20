@@ -1,7 +1,7 @@
 package backend.security.service;
 
-import backend.client.entity.Client;
-import backend.client.repository.ClientRepository;
+import backend.domain.client.entity.Client;
+import backend.domain.client.repository.ClientRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

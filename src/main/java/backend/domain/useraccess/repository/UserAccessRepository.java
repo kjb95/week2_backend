@@ -1,6 +1,6 @@
-package backend.useraccess.repository;
+package backend.domain.useraccess.repository;
 
-import backend.useraccess.entity.UserAccess;
+import backend.domain.useraccess.entity.UserAccess;
 
 import java.util.List;
 import java.util.Optional;

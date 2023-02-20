@@ -1,6 +1,6 @@
-package backend.useraccess.repository;
+package backend.domain.useraccess.repository;
 
-import backend.useraccess.entity.UserAccess;
+import backend.domain.useraccess.entity.UserAccess;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

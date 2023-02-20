@@ -1,4 +1,4 @@
-package backend.useraccess.enums;
+package backend.domain.useraccess.enums;
 
 
 public enum ErrorCode {
