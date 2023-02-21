@@ -3,6 +3,7 @@ package backend.security.config;
 import backend.jwt.filter.JwtFilter;
 import backend.jwt.token.TokenProvider;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -21,7 +22,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final TokenProvider tokenProvider;
 
     @Bean
-    @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
@@ -41,7 +41,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilterBefore(new JwtFilter(tokenProvider), UsernamePasswordAuthenticationFilter.class);
 
         http.authorizeRequests()
-                .antMatchers("/h2-console/**", "/favicon.ico", "/api/jwt")
+                .requestMatchers(PathRequest.toStaticResources()
+                        .atCommonLocations())
+                .permitAll()
+                .antMatchers("/api/jwt")
                 .permitAll()
                 .anyRequest()
                 .authenticated();

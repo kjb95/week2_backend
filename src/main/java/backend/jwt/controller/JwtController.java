@@ -21,6 +21,9 @@ public class JwtController {
 
     private final JwtService jwtService;
 
+    /**
+     * 유효한 사용자면 jwt 토큰 반환
+     */
     @PostMapping
     public ResponseEntity<JwtTokenDto> authenticateClient(@RequestBody @Validated AuthenticateClientRequestDto authenticateClientRequestDto, HttpServletResponse response) {
         String jwt = jwtService.authenticateClient(authenticateClientRequestDto);

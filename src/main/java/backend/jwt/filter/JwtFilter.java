@@ -21,7 +21,6 @@ public class JwtFilter extends OncePerRequestFilter {
    public static final String AUTHORIZATION_HEADER = "Authorization";
    public static final String BEARER_TOKEN_PREFIX = "Bearer ";
    private static final String INVALID_JWT_TOKEN = "INVALID JWT TOKEN";
-   private static final String INVALID_AUTHORIZATION_HEADER = "INVALID AUTHORIZATION HEADER";
    private final TokenProvider tokenProvider;
 
    @Override
@@ -50,7 +49,6 @@ public class JwtFilter extends OncePerRequestFilter {
 
    private String getToken(String authorizationHeader) {
       if (authorizationHeader == null) {
-         log.warn(INVALID_AUTHORIZATION_HEADER);
          return null;
       }
       String token = authorizationHeader.substring(BEARER_TOKEN_PREFIX.length());
@@ -62,6 +60,6 @@ public class JwtFilter extends OncePerRequestFilter {
    }
 
    private boolean isValidToken(String token) {
-      return StringUtils.hasText(token) && !tokenProvider.isExpiredOrManipulatedToken(token);
+      return StringUtils.hasText(token) && !tokenProvider.isValidTokenWithKey(token);
    }
 }

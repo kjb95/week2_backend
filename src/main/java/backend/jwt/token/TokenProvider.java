@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 public class TokenProvider implements InitializingBean {
 
    private static final String AUTHORITIES_KEY = "auth";
-   private final String secret;
+   private final String secret; // base64
    private final long tokenValidityInMilliseconds;
    private Key key;
 
@@ -54,7 +54,7 @@ public class TokenProvider implements InitializingBean {
               .compact();
    }
 
-   public boolean isExpiredOrManipulatedToken(String token) {
+   public boolean isValidTokenWithKey(String token) {
       try {
          Jwts.parserBuilder()
                  .setSigningKey(key)
