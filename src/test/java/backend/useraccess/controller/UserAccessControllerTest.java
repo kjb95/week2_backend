@@ -1,10 +1,10 @@
 package backend.useraccess.controller;
 
-import backend.useraccess.UserAccessTestDummy;
 import backend.domain.useraccess.dto.CreateUserAccessRequestDto;
 import backend.domain.useraccess.dto.UpdateUserAccessRequestDto;
 import backend.domain.useraccess.entity.UserAccess;
 import backend.domain.useraccess.repository.UserAccessJpaRepository;
+import backend.useraccess.UserAccessTestDummy;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
@@ -39,11 +40,16 @@ class UserAccessControllerTest {
     private UserAccessJpaRepository userAccessJpaRepository;
     private ObjectMapper objectMapper = new ObjectMapper();
 
+    private static Stream<Arguments> exceptionCreateUserAccessRequestDtos() {
+        return Stream.of(Arguments.arguments(UserAccessTestDummy.createUserAccessRequestDtoNotnullException()), Arguments.arguments(UserAccessTestDummy.createUserAccessRequestDtoPatternException()), Arguments.arguments(UserAccessTestDummy.createUserAccessRequestDtoMinException()));
+    }
+
     @BeforeEach
     public void setUp() {
         userAccessJpaRepository.deleteAll();
     }
 
+    @WithMockUser
     @Test
     public void 유저_접근_데이터_생성_성공() throws Exception {
         // given
@@ -66,6 +72,7 @@ class UserAccessControllerTest {
                 .get(0);
     }
 
+    @WithMockUser
     @ParameterizedTest
     @MethodSource("exceptionCreateUserAccessRequestDtos")
     public void 유저_접근_데이터_생성_바인딩_예외(CreateUserAccessRequestDto request) throws Exception {
@@ -75,12 +82,7 @@ class UserAccessControllerTest {
         resultActions.andExpect(status().isBadRequest());
     }
 
-    private static Stream<Arguments> exceptionCreateUserAccessRequestDtos() {
-        return Stream.of(Arguments.arguments(UserAccessTestDummy.createUserAccessRequestDtoNotnullException()),
-                Arguments.arguments(UserAccessTestDummy.createUserAccessRequestDtoPatternException()),
-                Arguments.arguments(UserAccessTestDummy.createUserAccessRequestDtoMinException()));
-    }
-
+    @WithMockUser
     @Test
     public void 유저_접근_데이터_생성_허용하지_않는_HTTP_메소드_예외() throws Exception {
         // given
@@ -96,6 +98,7 @@ class UserAccessControllerTest {
                 .content(objectMapper.writeValueAsString(request)));
     }
 
+    @WithMockUser
     @Test
     public void 유저_접근_데이터_아이디로_조회_성공() throws Exception {
         // given
@@ -119,6 +122,7 @@ class UserAccessControllerTest {
                 .andExpect(status().isOk());
     }
 
+    @WithMockUser
     @Test
     public void 유저_접근_데이터_아이디로_조회할때_존재하지_않는_아이디_예외() throws Exception {
         // when
@@ -127,6 +131,7 @@ class UserAccessControllerTest {
         resultActions.andExpect(status().isNotFound());
     }
 
+    @WithMockUser
     @Test
     public void 유저_접근_데이터_전체조회_성공() throws Exception {
         // given
@@ -140,6 +145,7 @@ class UserAccessControllerTest {
                 .andExpect(status().isOk());
     }
 
+    @WithMockUser
     @Test
     public void 유저_접근_데이터_수정_성공() throws Exception {
         // given
@@ -163,6 +169,7 @@ class UserAccessControllerTest {
                 .content(objectMapper.writeValueAsString(request)));
     }
 
+    @WithMockUser
     @Test
     public void 유저_접근_데이터_수정할때_존재하지_않는_아이디_예외() throws Exception {
         // given
@@ -173,6 +180,7 @@ class UserAccessControllerTest {
         resultActions.andExpect(status().isNotFound());
     }
 
+    @WithMockUser
     @Test
     public void 유저_접근_데이터_삭제_성공() throws Exception {
         // given
@@ -194,6 +202,7 @@ class UserAccessControllerTest {
                 .size();
     }
 
+    @WithMockUser
     @Test
     public void 유저_접근_데이터_삭제할때_존재하지_않는_아이디_예외() throws Exception {
         // when
@@ -201,5 +210,4 @@ class UserAccessControllerTest {
         // then
         resultActions.andExpect(status().isNotFound());
     }
-
 }

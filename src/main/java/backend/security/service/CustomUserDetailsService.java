@@ -5,6 +5,7 @@ import backend.domain.client.repository.ClientRepository;
 import backend.jwt.dto.AuthenticateClientRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -29,7 +30,7 @@ public class CustomUserDetailsService implements UserDetailsService {
      *
      * @see backend.jwt.service.JwtService#authenticateClient(AuthenticateClientRequestDto)
      * JwtService.authenticate() 호출시 loadUserByUsernae()가 호출됨
-     * @see backend.common.controller.ControllerAdvice#handleBadCredentialsException(BadCredentialsException)
+     * @see backend.common.controller.ControllerAdvice#handleAuthenticationException(AuthenticationException)
      * 시큐리티가 UsernameNotFoundException 예외를 캐치하고, BadCredentialsException 예외를 던짐
      * 컨트롤러 어드바이스에서 BadCredentialsException 예외를 처리
      */
